@@ -53,7 +53,7 @@
             .then(data => {
               const player = document.createElement('iframe');
               const playerContainer = document.getElementById('player');
-              player.setAttribute('src',`embed.html?url=${data.results.results[0].source}`);
+              player.setAttribute('src',`embed.html?url=${data.results[0].source}`);
               player.setAttribute('width','100%');
               
               playerContainer.appendChild(player);

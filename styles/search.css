@@ -47,6 +47,11 @@ header span{
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+header form{
+  height: fit-content;
+  width: fit-content;
+  margin:0px;
+}
 header input{
   padding:5px;
   border-radius:3px;

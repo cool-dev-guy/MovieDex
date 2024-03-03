@@ -17,6 +17,9 @@ body{
   display:flex;
   flex-direction:column;
 }
+main{
+    flex:1;
+}
 header{
   font-size: 1.3rem;
   padding:1em var(--padding);
@@ -36,6 +39,11 @@ header span{
   margin:0px;
   color:#DDDDDD;
   flex:1;
+}
+header form{
+    height: fit-content;
+    width: fit-content;
+    margin:0px;
 }
 header input{
   padding:5px;
