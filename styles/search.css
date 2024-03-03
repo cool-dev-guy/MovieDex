@@ -63,7 +63,7 @@ header input{
   padding:20px var(--padding);
   flex:1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   place-items: center left;
   grid-gap: 10px;
 }
