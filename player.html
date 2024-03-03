@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <base href="./">
+    <link rel="stylesheet" href="styles/player.css">
+  </head>
+  <body>
+    <header>
+      <span>MovieDex</span>
+      <input type="text" placeholder="Search">
+    </header>
+    <main>
+      <section id="player">
+        
+      </section>
+      <section id="options" class="content">
+        <h2>Options:</h2>
+        <article>
+          <span>Video 
+            <label>Default</label>
+            <label>Default</label>
+            </div>
+          </span>
+        </article>
+      </section>
+      <section id="meta" class="content" style="display:none;">
+        <h2>Details</h2>
+        <article>
+          <span>
+            Jeneman<br>
+            Type : Movie<br>
+            Year : 2023<br>
+            Scraped from : ProviderA<br>
+          </span>
+        </article>
+      </section>
+      <section id="streams" class="content">
+      </section>
+    </main>
+    <footer>
+      <strong>
+        About
+      </strong>
+      <br>This website is made for educational pourpouses only and only contain contents that are scrapped from other websites,none of its contents are stored in this website.
+    </footer>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        params = new URLSearchParams(window.location.search)
+        if (params.get('slug')){
+          fetch(`https://moviedex-web.vercel.app/api/streams?id=${params.get('slug')}`)
+            .then(response => response.json())
+            .then(data => {
+              const player = document.createElement('iframe');
+              const playerContainer = document.getElementById('player');
+              player.setAttribute('src',`embed.html?url=${data.results.results[0].source}`);
+              player.setAttribute('width','100%');
+              
+              playerContainer.appendChild(player);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        } else {
+            document.alert("Error, Try reloading");
+        }
+      });    
+    </script>
+  </body>
+</html>

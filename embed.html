@@ -1,0 +1,82 @@
+<head>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <style>
+    body{
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        display: grid;
+    }
+    </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        params = new URLSearchParams(window.location.search)
+        if (params.get('url')){
+            const source = params.get('url');
+            const video = document.createElement('video');
+            video.setAttribute('style','aspect-ratio:16/9');
+            video.setAttribute('controls',true)
+            video.setAttribute('width','100%')
+            video.setAttribute('crossorigin','anonymous')
+
+            const defaultOptions = {};
+
+            if (!Hls.isSupported()) {
+		        video.src = source;
+		        var player = new Plyr(video, defaultOptions);
+            } else {
+                const hls = new Hls();
+                hls.loadSource(source);
+                
+    	        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+	      	        const availableQualities = hls.levels.map((l) => l.height)
+	      	        availableQualities.unshift(0)
+                    defaultOptions.quality = {
+                        default: 0,
+                        options: availableQualities,
+                        forced: true,        
+                        onChange: (e) => updateQuality(e),
+                    }
+                    defaultOptions.i18n = {
+                        qualityLabel: {
+                            0: 'Auto',
+                        },
+                    }
+
+                    hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+	                var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+                    if (hls.autoLevelEnabled) {
+                        span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+                    } else {
+                        span.innerHTML = `AUTO`
+                    }
+	            })
+                document.getElementsByTagName('BODY')[0].appendChild(video);
+                var player = new Plyr(video, defaultOptions);
+            });	
+            hls.attachMedia(video);
+                window.hls = hls;		 
+            }
+        } else {
+            document.alert("Error, Try reloading");
+        }
+    });
+    function updateQuality(newQuality) {
+        if (newQuality === 0) {
+            window.hls.currentLevel = -1;
+        } else {
+            window.hls.levels.forEach((level, levelIndex) => {
+                if (level.height === newQuality) {
+                    console.log("Found quality match with " + newQuality);
+                    window.hls.currentLevel = levelIndex;
+                }
+            });
+        }
+    }
+</script>
+</body>
